@@ -1,1 +1,7 @@
-<main class="text-red-500">HELLO WORLD</main>
+<script>
+  import { Router, Route } from "svelte-routing";
+</script>
+
+<Router>
+  <Route>Not found</Route>
+</Router>
