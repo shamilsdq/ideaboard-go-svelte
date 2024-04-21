@@ -1,7 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"github.com/joho/godotenv"
+)
 
 func main() {
-	fmt.Println("Hello World")
+	// Load environment variables
+	godotenv.Load()
 }
