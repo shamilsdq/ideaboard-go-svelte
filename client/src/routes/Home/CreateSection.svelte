@@ -1,5 +1,6 @@
 <script>
   import Button from "@/components/Button.svelte";
+  import { navigate } from "svelte-routing";
 </script>
 
 <section
@@ -9,5 +10,5 @@
     Create a custom board for your team. Share the link with your team and start
     your digital brainstorming session.
   </p>
-  <Button label="Create New Board" />
+  <Button label="Create New Board" onClick={() => navigate("/board/new")} />
 </section>
