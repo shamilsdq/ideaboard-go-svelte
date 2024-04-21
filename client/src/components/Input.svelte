@@ -1,6 +1,7 @@
 <script>
   export let value = "";
   export let size = "regular";
+  export let extraClass = "";
 
   const SIZE = {
     large: "text-lg px-3.5 py-2 rounded-lg",
@@ -13,4 +14,8 @@
   const sizeStr = SIZE[size ?? "regular"];
 </script>
 
-<input type="text" bind:value class={`${commonStr} ${styleStr} ${sizeStr}`} />
+<input
+  type="text"
+  bind:value
+  class={`${commonStr} ${styleStr} ${sizeStr} ${extraClass}`}
+/>

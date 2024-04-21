@@ -3,6 +3,7 @@
   export let size = "regular";
   export let style = "primary";
   export let onClick = undefined;
+  export let disabled = false;
 
   const STYLE = {
     primary: "text-white bg-blue-700 hover:bg-blue-800",
@@ -19,6 +20,10 @@
   const sizeStr = SIZE[size ?? "regular"];
 </script>
 
-<button on:click={onClick} class={`${commonStr} ${styleStr} ${sizeStr}`}>
+<button
+  on:click={onClick}
+  {disabled}
+  class={`${commonStr} ${styleStr} ${sizeStr}`}
+>
   {label}
 </button>
