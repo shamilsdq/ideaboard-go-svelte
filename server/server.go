@@ -1,6 +1,7 @@
 package server
 
 import (
+	"log"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
@@ -18,7 +19,10 @@ func NewServer() http.Handler {
 
 func GetAssetServer() http.Handler {
 	if os.Getenv("DEBUG") == "true" {
-		frontendServerUrl := &url.URL{Host: os.Getenv("CLIENT_SERVER_URL")}
+		frontendServerUrl, err := url.Parse(os.Getenv("CLIENT_SERVER_URL"))
+		if err != nil {
+			log.Fatal("Client server URL error", err)
+		}
 		return httputil.NewSingleHostReverseProxy(frontendServerUrl)
 	} else {
 		rootPath := os.Getenv("CLIENT_FS_ROOT")
