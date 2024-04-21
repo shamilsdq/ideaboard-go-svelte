@@ -11,6 +11,7 @@ import (
 
 func NewServer() http.Handler {
 	router := mux.NewRouter()
+	router.PathPrefix("/api/boards").Handler(routers.GetBoardRouter())
 	router.PathPrefix("/").Handler(routers.GetAssetRouter()).Methods(http.MethodGet)
 	return handlers.LoggingHandler(os.Stdout, router)
 }
