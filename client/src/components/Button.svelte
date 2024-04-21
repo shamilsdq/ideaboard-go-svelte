@@ -6,7 +6,8 @@
   export let disabled = false;
 
   const STYLE = {
-    primary: "text-white bg-blue-700 hover:bg-blue-800",
+    primary:
+      "text-white bg-blue-700 hover:bg-blue-800 disabled:opacity-50 disabled:cursor-not-allowed",
   };
 
   const SIZE = {
