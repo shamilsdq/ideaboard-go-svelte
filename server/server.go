@@ -1,8 +1,14 @@
 package server
 
-import "net/http"
+import (
+	"net/http"
+	"os"
 
-func NewServer() *http.ServeMux {
-	mux := http.NewServeMux()
-	return mux
+	"github.com/gorilla/handlers"
+	"github.com/gorilla/mux"
+)
+
+func NewServer() http.Handler {
+	router := mux.NewRouter()
+	return handlers.LoggingHandler(os.Stdout, router)
 }
