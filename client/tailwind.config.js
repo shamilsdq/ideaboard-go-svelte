@@ -1,7 +1,12 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./src/**/*.{html,svelte}"],
-  purge: ["./**/*.{html,svelte}"],
-  theme: { extend: {} },
+  theme: {
+    extend: {
+      fontFamily: {
+        app: ["Merriweather", "Georgia", "serif"],
+      },
+    },
+  },
   plugins: [],
 };
