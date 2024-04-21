@@ -1,6 +1,6 @@
 <script>
   import { Router, Route } from "svelte-routing";
-  import Home from "@/routes/Home.svelte";
+  import { Home } from "@/routes/Home";
 </script>
 
 <Router>
