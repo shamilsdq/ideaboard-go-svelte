@@ -1,4 +1,5 @@
 <script>
+  import boardsService from "@/services/boards";
   import Button from "@/components/Button.svelte";
   import Input from "@/components/Input.svelte";
   import BoardSections from "./BoardSections.svelte";
@@ -6,8 +7,14 @@
   let title = "";
   let sections = ["Section"];
 
-  const onSubmit = () => {
-    console.log(title, sections);
+  const onSubmit = async () => {
+    const payload = { title, sections };
+    try {
+      const response = await boardsService.create(payload);
+      console.log(response);
+    } catch (err) {
+      console.error(err);
+    }
   };
 </script>
 
