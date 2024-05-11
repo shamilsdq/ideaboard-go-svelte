@@ -1,3 +1,5 @@
+import { w3cwebsocket as WebSocket } from "websocket";
+
 const API_ROOT = import.meta.env.VITE_SERVER_URL + "/api/boards";
 
 const create = async (payload) => {
@@ -14,5 +16,13 @@ const create = async (payload) => {
   }
 };
 
-const boardsService = { create };
+const connectSocket = async (boardId) => {
+  const socketUrl = `${API_ROOT.replace(/^https?:\/\//i, "ws://")}/${boardId}`;
+  const ws = new WebSocket(socketUrl);
+  ws.onopen = () => console.log(`Opened WebSocket connection at ${socketUrl}`);
+  ws.onclose = () => console.log(`Closed WebSocket connection`);
+  return ws;
+};
+
+const boardsService = { create, connectSocket };
 export default boardsService;
