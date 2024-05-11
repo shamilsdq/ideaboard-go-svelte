@@ -1,4 +1,6 @@
 <script>
+  import { navigate } from "svelte-routing";
+
   import boardsService from "@/services/boards";
   import Button from "@/components/Button.svelte";
   import Input from "@/components/Input.svelte";
@@ -10,8 +12,8 @@
   const onSubmit = async () => {
     const payload = { title, sections };
     try {
-      const response = await boardsService.create(payload);
-      console.log(response);
+      const { boardId } = await boardsService.create(payload);
+      if (boardId) navigate(`/board/${boardId}`);
     } catch (err) {
       console.error(err);
     }
