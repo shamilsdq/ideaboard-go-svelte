@@ -8,3 +8,8 @@ type CreateBoardRequestDto struct {
 type CreateBoardResponseDto struct {
 	BoardId string `json:"boardId"`
 }
+
+type BoardSocketDto struct {
+	Code    string `json:"code"`
+	Content any    `json:"content"`
+}

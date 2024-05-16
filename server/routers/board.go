@@ -61,4 +61,5 @@ func socket(w http.ResponseWriter, r *http.Request) {
 	}
 
 	board.AddMember(conn)
+	go utils.HandleIncomingMessages(conn, board)
 }
