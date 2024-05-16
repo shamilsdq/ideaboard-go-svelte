@@ -13,6 +13,7 @@ import (
 func GetBoardRouter() http.Handler {
 	router := mux.NewRouter()
 	router.HandleFunc("/api/boards", create).Methods(http.MethodPost)
+	router.HandleFunc("/api/boards/{boardId}", socket)
 	return router
 }
 
@@ -38,4 +39,26 @@ func create(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
 	w.Write(responseJson)
+}
+
+func socket(w http.ResponseWriter, r *http.Request) {
+	boardId, boardIdOk := mux.Vars(r)["boardId"]
+	if !boardIdOk {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	board, boardErr := services.GetBoardService().GetBoard(boardId)
+	if boardErr != nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	conn, connErr := utils.UpgradeConnection(w, r)
+	if connErr != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	board.AddMember(conn)
 }
