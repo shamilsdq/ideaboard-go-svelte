@@ -14,8 +14,8 @@ func NewServer() http.Handler {
 
 	router.Use(corsMiddleware)
 
-	router.PathPrefix("/").Handler(routers.GetAssetRouter()).Methods(http.MethodGet)
 	router.PathPrefix("/api").Handler(routers.GetBoardRouter())
+	router.PathPrefix("/").Handler(routers.GetAssetRouter()).Methods(http.MethodGet)
 
 	return handlers.LoggingHandler(os.Stdout, router)
 }
