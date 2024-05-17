@@ -13,3 +13,7 @@ type BoardSocketDto struct {
 	Code    string `json:"code"`
 	Content any    `json:"content"`
 }
+
+type BoardSocketErrorDto struct {
+	Error string `json:"error"`
+}

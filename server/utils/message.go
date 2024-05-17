@@ -30,7 +30,8 @@ func HandleIncomingMessages(conn *websocket.Conn, board *entities.Board) {
 		}
 
 		if err != nil {
-			// send json error message to conn
+			errDto := dtos.BoardSocketErrorDto{Error: err.Error()}
+			conn.WriteJSON(&errDto)
 		}
 	}
 }
