@@ -18,7 +18,7 @@ func GetBoardRouter() http.Handler {
 }
 
 func create(w http.ResponseWriter, r *http.Request) {
-	var requestDto dtos.CreateBoardRequestDto
+	var requestDto dtos.BoardCreateRequestDto
 	utils.ParseRequestBody(r, &requestDto)
 
 	boardId, createErr := services.
@@ -29,7 +29,7 @@ func create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	responseDto := dtos.CreateBoardResponseDto{BoardId: boardId}
+	responseDto := dtos.BoardCreateResponseDto{BoardId: boardId}
 	responseJson, jsonErr := json.Marshal(responseDto)
 	if jsonErr != nil {
 		w.WriteHeader(http.StatusInternalServerError)

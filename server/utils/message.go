@@ -11,7 +11,7 @@ import (
 func HandleIncomingMessages(conn *websocket.Conn, board *entities.Board) {
 	defer conn.Close()
 	for {
-		var dto dtos.BoardSocketDto
+		var dto dtos.SocketDto
 		if jsonErr := conn.ReadJSON(&dto); jsonErr != nil {
 			continue
 		}
@@ -30,14 +30,14 @@ func HandleIncomingMessages(conn *websocket.Conn, board *entities.Board) {
 		}
 
 		if err != nil {
-			errDto := dtos.BoardSocketErrorDto{Error: err.Error()}
+			errDto := dtos.SocketErrorDto{Error: err.Error()}
 			conn.WriteJSON(&errDto)
 		}
 	}
 }
 
 func handlePostCreate(content interface{}, board *entities.Board) error {
-	var dto dtos.CreatePostDto
+	var dto dtos.PostCreateDto
 	if parseErr := ParseToDto(content, &dto); parseErr != nil {
 		return parseErr
 	}
@@ -45,7 +45,7 @@ func handlePostCreate(content interface{}, board *entities.Board) error {
 }
 
 func handlePostUpdate(content interface{}, board *entities.Board) error {
-	var dto dtos.UpdatePostDto
+	var dto dtos.PostUpdateDto
 	if parseErr := ParseToDto(content, &dto); parseErr != nil {
 		return parseErr
 	}
@@ -53,7 +53,7 @@ func handlePostUpdate(content interface{}, board *entities.Board) error {
 }
 
 func handlePostDelete(content interface{}, board *entities.Board) error {
-	var dto dtos.DeletePostDto
+	var dto dtos.PostDeleteDto
 	if parseErr := ParseToDto(content, &dto); parseErr != nil {
 		return parseErr
 	}

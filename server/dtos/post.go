@@ -1,16 +1,16 @@
 package dtos
 
-type CreatePostDto struct {
+type PostCreateDto struct {
 	SectionId int    `json:"sectionId"`
 	Content   string `json:"content"`
 }
 
-type UpdatePostDto struct {
+type PostUpdateDto struct {
 	Id        int    `json:"id"`
 	SectionId int    `json:"sectionId"`
 	Content   string `json:"content"`
 }
 
-type DeletePostDto struct {
+type PostDeleteDto struct {
 	Id int `json:"id"`
 }
