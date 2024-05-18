@@ -23,6 +23,9 @@ func (board *Board) AddMember(conn *websocket.Conn) {
 	defer board.mu.Unlock()
 
 	board.members = append(board.members, conn)
+
+	boardData := board.generateBoardData()
+	conn.WriteJSON(boardData)
 }
 
 func (board *Board) RemoveMember(conn *websocket.Conn) error {
@@ -141,6 +144,33 @@ func (board *Board) broadcast(code string, content any) {
 	dto := &dtos.SocketDto{Code: code, Content: content}
 	for _, member := range board.members {
 		member.WriteJSON(dto)
+	}
+}
+
+func (board *Board) generateBoardData() *dtos.BoardDataDto {
+	sectionDtos := make([]*dtos.SectionDataDto, 0)
+	for sectionId, section := range board.sections {
+		sectionDtos = append(sectionDtos, &dtos.SectionDataDto{
+			Id:      sectionId,
+			Title:   section.Title,
+			PostIds: section.PostIds,
+		})
+	}
+
+	postDtos := make([]*dtos.PostDataDto, 0)
+	for postId, post := range board.posts {
+		postDtos = append(postDtos, &dtos.PostDataDto{
+			Id:        postId,
+			SectionId: post.SectionId,
+			Content:   post.Content,
+		})
+	}
+
+	return &dtos.BoardDataDto{
+		Title:       board.title,
+		Sections:    sectionDtos,
+		Posts:       postDtos,
+		MemberCount: len(board.members),
 	}
 }
 
