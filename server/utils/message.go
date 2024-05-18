@@ -9,7 +9,11 @@ import (
 )
 
 func HandleIncomingMessages(conn *websocket.Conn, board *entities.Board) {
-	defer conn.Close()
+	defer func() {
+		board.RemoveMember(conn)
+		conn.Close()
+	}()
+
 	for {
 		var dto dtos.SocketDto
 		if readErr := conn.ReadJSON(&dto); readErr != nil {

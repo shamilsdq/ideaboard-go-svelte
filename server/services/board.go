@@ -61,10 +61,6 @@ func (bs *boardService) JoinBoard(boardId string, conn *websocket.Conn) error {
 		return fmt.Errorf("board does not exist: %s", boardId)
 	}
 	board.AddMember(conn)
-	conn.SetCloseHandler(func(code int, text string) error {
-		board.RemoveMember(conn)
-		return nil
-	})
 	return nil
 }
 
