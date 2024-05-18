@@ -12,8 +12,9 @@ func HandleIncomingMessages(conn *websocket.Conn, board *entities.Board) {
 	defer conn.Close()
 	for {
 		var dto dtos.SocketDto
-		if jsonErr := conn.ReadJSON(&dto); jsonErr != nil {
-			continue
+		if readErr := conn.ReadJSON(&dto); readErr != nil {
+			fmt.Printf("JSON read error: %v\n", readErr)
+			break
 		}
 
 		var err error
