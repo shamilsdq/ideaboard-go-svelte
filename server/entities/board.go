@@ -22,6 +22,10 @@ func (board *Board) AddMember(conn *websocket.Conn) {
 	board.mu.Lock()
 	defer board.mu.Unlock()
 
+	board.broadcast("MEMBER_JOINED", &dtos.MemberJoinBroadcastDto{
+		MemberCount: len(board.members) + 1,
+	})
+
 	board.members = append(board.members, conn)
 
 	boardData := board.generateBoardData()
@@ -35,6 +39,9 @@ func (board *Board) RemoveMember(conn *websocket.Conn) error {
 	for i, m := range board.members {
 		if m == conn {
 			board.members = append(board.members[:i], board.members[i+1:]...)
+			board.broadcast("MEMBER_EXITED", &dtos.MemberExitBroadcastDto{
+				MemberCount: len(board.members),
+			})
 			return nil
 		}
 	}
