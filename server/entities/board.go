@@ -184,7 +184,7 @@ func (board *Board) generateBoardData() *dtos.BoardDataDto {
 func NewBoard(title string, sections []string) *Board {
 	sectionMap := make(map[int]*Section)
 	for idx, sectionTitle := range sections {
-		sectionMap[idx] = &Section{
+		sectionMap[idx+1] = &Section{
 			Title:   sectionTitle,
 			PostIds: make([]int, 0),
 		}
