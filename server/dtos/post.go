@@ -14,3 +14,8 @@ type PostUpdateDto struct {
 type PostDeleteDto struct {
 	Id int `json:"id"`
 }
+
+type PostCreateBroadcastDto = PostUpdateDto
+type PostUpdateBroadcastDto = PostUpdateDto
+
+type PostDeleteBroadcastDto = PostDeleteDto

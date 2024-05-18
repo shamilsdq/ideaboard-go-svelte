@@ -5,6 +5,7 @@ import (
 	"sync"
 
 	"github.com/gorilla/websocket"
+	"github.com/shamilsdq/ideaboard-go-svelte/server/dtos"
 )
 
 type Board struct {
@@ -48,8 +49,17 @@ func (board *Board) AddPost(sectionId int, content string) error {
 	}
 
 	board._postIdCounter += 1
+	newPost := &Post{Content: content, SectionId: sectionId}
+
 	section.AddPostId(board._postIdCounter)
-	board.posts[board._postIdCounter] = &Post{Content: content}
+	board.posts[board._postIdCounter] = newPost
+
+	board.broadcast("POST_CREATED", &dtos.PostCreateBroadcastDto{
+		Id:        board._postIdCounter,
+		SectionId: newPost.SectionId,
+		Content:   newPost.Content,
+	})
+
 	return nil
 }
 
@@ -73,6 +83,13 @@ func (board *Board) UpdatePost(postId int, sectionId int, content string) error 
 
 	post.Content = content
 	post.SectionId = sectionId
+
+	board.broadcast("POST_UPDATED", &dtos.PostUpdateBroadcastDto{
+		Id:        postId,
+		SectionId: post.SectionId,
+		Content:   post.Content,
+	})
+
 	return nil
 }
 
@@ -80,11 +97,22 @@ func (board *Board) DeletePost(postId int) error {
 	board.mu.Lock()
 	defer board.mu.Unlock()
 
-	if _, postOk := board.posts[postId]; !postOk {
+	post, postOk := board.posts[postId]
+	if !postOk {
 		return fmt.Errorf("post not found: %d", postId)
 	}
 
+	section, sectionOk := board.sections[post.SectionId]
+	if sectionOk {
+		section.RemovePostId(postId)
+	}
+
 	delete(board.posts, postId)
+
+	board.broadcast("POST_DELETED", &dtos.PostDeleteBroadcastDto{
+		Id: postId,
+	})
+
 	return nil
 }
 
@@ -107,6 +135,13 @@ func (board *Board) UpdateSection(sectionId int, sectionTitle string) error {
 
 	section.Title = sectionTitle
 	return nil
+}
+
+func (board *Board) broadcast(code string, content any) {
+	dto := &dtos.SocketDto{Code: code, Content: content}
+	for _, member := range board.members {
+		member.WriteJSON(dto)
+	}
 }
 
 func NewBoard(title string, sections []string) *Board {
