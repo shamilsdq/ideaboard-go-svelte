@@ -19,3 +19,5 @@ type PostCreateBroadcastDto = PostUpdateDto
 type PostUpdateBroadcastDto = PostUpdateDto
 
 type PostDeleteBroadcastDto = PostDeleteDto
+
+type PostDataDto = PostUpdateDto
