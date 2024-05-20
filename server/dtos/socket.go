@@ -6,5 +6,5 @@ type SocketDto struct {
 }
 
 type SocketErrorDto struct {
-	Error string `json:"error"`
+	Errors []string `json:"errors"`
 }
