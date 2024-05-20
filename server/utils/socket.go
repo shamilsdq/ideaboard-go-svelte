@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/websocket"
+	"github.com/shamilsdq/ideaboard-go-svelte/server/entities"
 )
 
 var upgrader = websocket.Upgrader{
@@ -14,4 +15,9 @@ var upgrader = websocket.Upgrader{
 
 func UpgradeConnection(w http.ResponseWriter, r *http.Request) (*websocket.Conn, error) {
 	return upgrader.Upgrade(w, r, nil)
+}
+
+func Cleanup(conn *websocket.Conn, board *entities.Board) {
+	board.RemoveMember(conn)
+	conn.Close()
 }
