@@ -29,7 +29,7 @@ func (board *Board) AddMember(conn *websocket.Conn) {
 	board.members = append(board.members, conn)
 
 	boardData := board.generateBoardData()
-	conn.WriteJSON(boardData)
+	conn.WriteJSON(&dtos.SocketDto{Code: "INITIAL", Content: boardData})
 }
 
 func (board *Board) RemoveMember(conn *websocket.Conn) error {
@@ -53,7 +53,7 @@ func (board *Board) AddPost(sectionId int, content string) error {
 	board.mu.Lock()
 	defer board.mu.Unlock()
 
-	section, ok := board.sections[sectionId]
+	_, ok := board.sections[sectionId]
 	if !ok {
 		return fmt.Errorf("section not found: %d", sectionId)
 	}
@@ -61,7 +61,6 @@ func (board *Board) AddPost(sectionId int, content string) error {
 	board._postIdCounter += 1
 	newPost := &Post{Content: content, SectionId: sectionId}
 
-	section.AddPostId(board._postIdCounter)
 	board.posts[board._postIdCounter] = newPost
 
 	board.broadcast("POST_CREATED", &dtos.PostCreateBroadcastDto{
@@ -82,14 +81,10 @@ func (board *Board) UpdatePost(postId int, sectionId int, content string) error 
 		return fmt.Errorf("post not found: %d", postId)
 	}
 
-	oldSection := board.sections[post.SectionId]
-	oldSection.RemovePostId(postId)
-
-	newSection, sectionOk := board.sections[sectionId]
+	_, sectionOk := board.sections[sectionId]
 	if !sectionOk {
 		return fmt.Errorf("section not found: %d", sectionId)
 	}
-	newSection.AddPostId(postId)
 
 	post.Content = content
 	post.SectionId = sectionId
@@ -107,21 +102,14 @@ func (board *Board) DeletePost(postId int) error {
 	board.mu.Lock()
 	defer board.mu.Unlock()
 
-	post, postOk := board.posts[postId]
+	_, postOk := board.posts[postId]
 	if !postOk {
 		return fmt.Errorf("post not found: %d", postId)
 	}
 
-	section, sectionOk := board.sections[post.SectionId]
-	if sectionOk {
-		section.RemovePostId(postId)
-	}
-
 	delete(board.posts, postId)
 
-	board.broadcast("POST_DELETED", &dtos.PostDeleteBroadcastDto{
-		Id: postId,
-	})
+	board.broadcast("POST_DELETED", &dtos.PostDeleteBroadcastDto{Id: postId})
 
 	return nil
 }
@@ -131,7 +119,7 @@ func (board *Board) AddSection(sectionTitle string) {
 	defer board.mu.Unlock()
 
 	board._sectionIdCounter += 1
-	board.sections[board._sectionIdCounter] = &Section{Title: sectionTitle, PostIds: make([]int, 0)}
+	board.sections[board._sectionIdCounter] = &Section{Title: sectionTitle}
 }
 
 func (board *Board) UpdateSection(sectionId int, sectionTitle string) error {
@@ -158,9 +146,8 @@ func (board *Board) generateBoardData() *dtos.BoardDataDto {
 	sectionDtos := make([]*dtos.SectionDataDto, 0)
 	for sectionId, section := range board.sections {
 		sectionDtos = append(sectionDtos, &dtos.SectionDataDto{
-			Id:      sectionId,
-			Title:   section.Title,
-			PostIds: section.PostIds,
+			Id:    sectionId,
+			Title: section.Title,
 		})
 	}
 
@@ -184,10 +171,7 @@ func (board *Board) generateBoardData() *dtos.BoardDataDto {
 func NewBoard(title string, sections []string) *Board {
 	sectionMap := make(map[int]*Section)
 	for idx, sectionTitle := range sections {
-		sectionMap[idx+1] = &Section{
-			Title:   sectionTitle,
-			PostIds: make([]int, 0),
-		}
+		sectionMap[idx+1] = &Section{Title: sectionTitle}
 	}
 
 	return &Board{
