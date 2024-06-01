@@ -1,7 +1,7 @@
 package dtos
 
 type MemberJoinBroadcastDto struct {
-	MemberCount int
+	MemberCount int `json:"memberCount"`
 }
 
 type MemberExitBroadcastDto = MemberJoinBroadcastDto

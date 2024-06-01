@@ -10,8 +10,8 @@ type BoardCreateResponseDto struct {
 }
 
 type BoardDataDto struct {
-	Title       string `json:"title"`
-	Sections    []*SectionDataDto
-	Posts       []*PostDataDto
-	MemberCount int
+	Title       string            `json:"title"`
+	Sections    []*SectionDataDto `json:"sections"`
+	Posts       []*PostDataDto    `json:"posts"`
+	MemberCount int               `json:"memberCount"`
 }

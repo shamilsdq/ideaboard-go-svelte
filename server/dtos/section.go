@@ -1,7 +1,6 @@
 package dtos
 
 type SectionDataDto struct {
-	Id      int
-	Title   string
-	PostIds []int
+	Id    int    `json:"id"`
+	Title string `json:"title"`
 }
