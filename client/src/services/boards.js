@@ -16,12 +16,9 @@ const create = async (payload) => {
   }
 };
 
-const connectSocket = async (boardId) => {
+const connectSocket = (boardId) => {
   const socketUrl = `${API_ROOT.replace(/^https?:\/\//i, "ws://")}/${boardId}`;
-  const ws = new WebSocket(socketUrl);
-  ws.onopen = () => console.log(`Opened WebSocket connection at ${socketUrl}`);
-  ws.onclose = () => console.log(`Closed WebSocket connection`);
-  return ws;
+  return new WebSocket(socketUrl);
 };
 
 const boardsService = { create, connectSocket };
