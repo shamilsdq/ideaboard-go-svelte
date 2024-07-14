@@ -16,9 +16,31 @@ const create = async (payload) => {
   }
 };
 
-const connectSocket = (boardId) => {
+const connectSocket = (boardId, config) => {
+  const { loadingSetter, instanceSetter, messageHandler } = config;
   const socketUrl = `${API_ROOT.replace(/^https?:\/\//i, "ws://")}/${boardId}`;
-  return new WebSocket(socketUrl);
+  const socket = new WebSocket(socketUrl);
+
+  socket.onopen = () => {
+    loadingSetter?.(false);
+    instanceSetter?.(socket);
+    console.log("Socket opened");
+  };
+
+  socket.onclose = () => {
+    instanceSetter?.(undefined);
+    console.log("Socket closed");
+  };
+
+  socket.onerror = () => {
+    console.error("Socket error");
+  };
+
+  socket.onmessage = (message) => {
+    const { errors, ...parsedData } = JSON.parse(message.data.toString());
+    if (errors) console.error(errors);
+    else messageHandler?.(parsedData);
+  };
 };
 
 const boardsService = { create, connectSocket };
