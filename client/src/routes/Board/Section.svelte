@@ -15,7 +15,9 @@
 
 <section class="flex-1 min-w-80 flex flex-col bg-gray-100 rounded-sm border">
   <div class="w-full flex gap-5 p-3.5 items-start">
-    <h3 class="flex-1 font-app font-medium leading-6">{section.title}</h3>
+    <h3 class="flex-1 font-app font-medium leading-6 break-words">
+      {section.title}
+    </h3>
     <div title="Add new post" class="rounded-full">
       <CirclePlusSolid
         withEvents
