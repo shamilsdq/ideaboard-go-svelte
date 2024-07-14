@@ -6,8 +6,9 @@
   export let disabled = false;
 
   const STYLE = {
-    primary:
-      "text-white bg-blue-700 hover:bg-blue-800 disabled:opacity-50 disabled:cursor-not-allowed",
+    primary: "text-white bg-gray-700 hover:bg-black disabled:bg-gray-400",
+    secondary:
+      "text-black bg-gray-300 hover:bg-gray-400 disabled:text-gray-500",
   };
 
   const SIZE = {
@@ -16,7 +17,8 @@
     small: "text-sm px-3 py-1 rounded-sm",
   };
 
-  const commonStr = "inline-flex items-center";
+  const commonStr =
+    "inline-flex gap-2 items-center duration-300 disabled:cursor-not-allowed";
   const styleStr = STYLE[style ?? "primary"];
   const sizeStr = SIZE[size ?? "regular"];
 </script>

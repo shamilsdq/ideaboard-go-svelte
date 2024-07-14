@@ -56,7 +56,7 @@
       bind:this={inputElement}
     ></div>
     <footer class="flex gap-2 justify-end">
-      <Button label="Cancel" onClick={handleCancel} />
+      <Button label="Cancel" onClick={handleCancel} style="secondary" />
       <Button label="Save" onClick={handleSave} />
     </footer>
   </div>
