@@ -2,6 +2,7 @@
   import { createEventDispatcher } from "svelte";
   import { CirclePlusSolid } from "svelte-awesome-icons";
   import { boardStore } from "@/stores/board";
+  import Post from "./Post.svelte";
 
   export let section;
 
@@ -26,9 +27,9 @@
       />
     </div>
   </div>
-  <div class="flex-1 flex flex-col overflow-y-auto">
+  <div class="flex-1 flex flex-col overflow-y-auto p-3 gap-2">
     {#each posts as post}
-      {post.id}
+      <Post data={post} />
     {/each}
   </div>
 </section>
