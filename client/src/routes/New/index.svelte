@@ -1,6 +1,6 @@
 <script>
   import { navigate } from "svelte-routing";
-
+  import { CheckSolid } from "svelte-awesome-icons";
   import boardsService from "@/services/boards";
   import Button from "@/components/Button.svelte";
   import Input from "@/components/Input.svelte";
@@ -44,6 +44,7 @@
         onClick={onSubmit}
         disabled={title === "" || sections.length === 0}
         size="large"
+        iconClass={CheckSolid}
       />
     </section>
   </div>

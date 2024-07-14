@@ -1,6 +1,7 @@
 <script>
-  import Button from "@/components/Button.svelte";
   import { navigate } from "svelte-routing";
+  import { PlusSolid } from "svelte-awesome-icons";
+  import Button from "@/components/Button.svelte";
 </script>
 
 <section
@@ -10,5 +11,9 @@
     Create a custom board for your team. Share the link with your team and start
     your digital brainstorming session.
   </p>
-  <Button label="Create New Board" onClick={() => navigate("/board/new")} />
+  <Button
+    label="Create New Board"
+    onClick={() => navigate("/board/new")}
+    iconClass={PlusSolid}
+  />
 </section>

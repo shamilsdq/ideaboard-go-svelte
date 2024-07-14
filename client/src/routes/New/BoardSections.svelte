@@ -1,4 +1,5 @@
 <script>
+  import { PlusSolid, TrashCanRegular } from "svelte-awesome-icons";
   import Button from "@/components/Button.svelte";
   import Input from "@/components/Input.svelte";
 
@@ -18,11 +19,18 @@
     <li class="flex gap-2">
       <Input bind:value={items[idx]} extraClass="flex-1" />
       <Button
-        label="Remove"
+        label=""
+        style="transparent"
         onClick={() => removeItem(idx)}
         disabled={items.length === 1}
+        iconClass={TrashCanRegular}
       />
     </li>
   {/each}
 </ul>
-<Button label="Add" onClick={addItem} />
+<Button
+  label="Add new section"
+  onClick={addItem}
+  iconClass={PlusSolid}
+  style="secondary"
+/>

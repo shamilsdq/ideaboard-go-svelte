@@ -1,6 +1,7 @@
 <script>
   import { createEventDispatcher, onMount } from "svelte";
   import { blur } from "svelte/transition";
+  import { CheckSolid, XmarkSolid } from "svelte-awesome-icons";
   import Button from "@/components/Button.svelte";
 
   export let data;
@@ -56,8 +57,13 @@
       bind:this={inputElement}
     ></div>
     <footer class="flex gap-2 justify-end">
-      <Button label="Cancel" onClick={handleCancel} style="secondary" />
-      <Button label="Save" onClick={handleSave} />
+      <Button
+        label="Cancel"
+        onClick={handleCancel}
+        style="secondary"
+        iconClass={XmarkSolid}
+      />
+      <Button label="Save" onClick={handleSave} iconClass={CheckSolid} />
     </footer>
   </div>
 </div>
