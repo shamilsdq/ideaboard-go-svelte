@@ -27,9 +27,16 @@
       />
     </div>
   </div>
-  <div class="flex-1 flex flex-col overflow-y-auto p-3 gap-2">
+  <div class="masonry p-3 gap-2 overflow-y-auto">
     {#each posts as post}
       <Post data={post} />
     {/each}
   </div>
 </section>
+
+<style>
+  .masonry {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+</style>
