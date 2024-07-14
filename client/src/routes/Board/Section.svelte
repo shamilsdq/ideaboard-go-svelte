@@ -1,14 +1,15 @@
 <script>
+  import { createEventDispatcher } from "svelte";
   import { CirclePlusSolid } from "svelte-awesome-icons";
   import { boardStore } from "@/stores/board";
 
   export let section;
 
+  const dispatch = createEventDispatcher();
+
   $: posts = $boardStore.posts?.filter((post) => post.sectionId === section.id);
 
-  const addPost = () => {
-    console.log(`new post for section: ${section.title} (${section.id})`);
-  };
+  const addPost = () => dispatch("add-post");
 </script>
 
 <section class="flex-1 min-w-80 flex flex-col bg-gray-100 rounded-sm border">
